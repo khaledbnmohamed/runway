@@ -1,0 +1,23 @@
+namespace: ${namespace}
+cfngin_bucket: ${cfngin_bucket_name}
+
+sys_path: ./
+
+stacks:
+  cet-013-stack-vpc:
+    template_path: templates/vpc_template.yaml
+    variables:
+      EnvironmentName: cet-013
+      VpcCIDR: 10.192.0.0/16
+      PublicSubnet1CIDR: 10.192.10.0/24
+      PublicSubnet2CIDR: 10.192.11.0/24
+      PrivateSubnet1CIDR: 10.192.20.0/24
+      PrivateSubnet2CIDR: 10.192.21.0/24
+  cet-013-stack-ec2:
+    template_path: templates/ec2_template.yaml
+    variables:
+      NetworkStackNameParameter: cet-013-stack-vpc
+      KeyName: khaled_key
+      LatestAmiId: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+      BastionHostWhitelistedIP: 156.192.5.120/32
+      InstanceType: t2.small
