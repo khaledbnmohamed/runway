@@ -1,0 +1,205 @@
+Description:  This Template connects the custom VPC to the EC2 instances with the usage of Bastion host
+
+Parameters:
+  NetworkStackNameParameter:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+    Default: CET-05-VPC-Khaled
+
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    Default: khaled_key
+
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+  BastionHostWhitelistedIP:
+    Type: String
+    Default: 156.192.5.120/32 #My personal IP
+
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.small
+    AllowedValues:
+      - t1.micro
+      - t2.nano
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+    ConstraintDescription: must be a valid EC2 instance type.
+
+Resources:
+  PublicWebServerInstance1:
+    Type: 'AWS::EC2::Instance'
+    Metadata:
+      'AWS::CloudFormation::Init':
+        configSets:
+          InstallAndRun:
+            - Install
+            - Configure
+        Install:
+          packages:
+            yum:
+              httpd: []
+          files:
+            /var/www/html/index.html:
+              content: !Join
+                - ''
+                - - |
+                    <html> <h1>Welcome to the AWS CloudFormation Khaled Sample</h1></html>
+
+              mode: '000600'
+              owner: apache
+              group: apache
+          services:
+            sysvinit:
+              httpd:
+                enabled: 'true'
+                ensureRunning: 'true'
+        Configure: {}
+    Properties:
+    # latest AMI
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-PublicSubnet1'
+      SecurityGroupIds:
+      - !GetAtt InstanceSecurityGroup.GroupId
+      KeyName: !Ref KeyName
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum update -y aws-cfn-bootstrap
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource PublicWebServerInstance1  --configsets InstallAndRun --region ${AWS::Region}
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PublicWebServerInstance1 --region ${AWS::Region}
+
+  PublicWebServerInstance2:
+    Type: 'AWS::EC2::Instance'
+    Metadata:
+      'AWS::CloudFormation::Init':
+        configSets:
+          InstallAndRun:
+            - Install
+            - Configure
+        Install:
+          packages:
+            yum:
+              httpd: []
+          files:
+            /var/www/html/index.html:
+              content: !Join
+                - ''
+                - - |
+                    <html> <h1>Welcome to the AWS CloudFormation Khaled Sample</h1></html>
+              mode: '000600'
+              owner: apache
+              group: apache
+          services:
+            sysvinit:
+              httpd:
+                enabled: 'true'
+                ensureRunning: 'true'
+        Configure: {}
+    Properties:
+    # latest AMI
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-PublicSubnet2'
+      SecurityGroupIds:
+      - !GetAtt InstanceSecurityGroup.GroupId
+      KeyName: !Ref KeyName
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum update -y aws-cfn-bootstrap
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource PublicWebServerInstance1  --configsets InstallAndRun --region ${AWS::Region}
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PublicWebServerInstance1 --region ${AWS::Region}
+
+  BastionHostInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+    # latest AMI
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-PublicSubnet1'
+      SecurityGroupIds:
+      - !GetAtt BastionHostSecurityGroup.GroupId
+      KeyName: !Ref KeyName
+      Tags:
+        - Key: Name
+          Value: "Bastion Host"
+
+  PrivateWebServerInstance1:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+    # latest AMI
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-PrivateSubnet1'
+      SecurityGroupIds:
+      - !GetAtt PrivateInstanceSecurityGroup.GroupId
+      KeyName: !Ref KeyName
+
+
+  PrivateWebServerInstance2:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+    # latest AMI
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-PrivateSubnet2'
+      SecurityGroupIds:
+      - !GetAtt PrivateInstanceSecurityGroup.GroupId
+      KeyName: !Ref KeyName
+
+
+  BastionHostSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Open Port 22 for ssh
+      VpcId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-VPC'
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: !Ref BastionHostWhitelistedIP #My personal IP
+
+  PrivateInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http and ssh to client host
+      VpcId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-VPC'
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: !ImportValue
+          'Fn::Sub': '${NetworkStackNameParameter}-VPCCidrBlock'
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http and ssh to client host
+      VpcId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-VPC'
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: !ImportValue
+          'Fn::Sub': '${NetworkStackNameParameter}-VPCCidrBlock'
