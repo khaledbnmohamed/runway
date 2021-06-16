@@ -202,6 +202,18 @@ Resources:
         From: 1024
         To: 65535
 
+  InboundRule4:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref NACL
+      RuleNumber: 400
+      Protocol: 6
+      RuleAction: allow
+      CidrBlock: !Ref VPC.CidrBlock
+      PortRange:
+        From: 443
+        To: 443
+
   OutboundRule:
     Type: AWS::EC2::NetworkAclEntry
     Properties:
@@ -214,6 +226,18 @@ Resources:
       PortRange:
         From: 1024
         To: 65535
+
+  OutboundRule2:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref NACL
+      RuleNumber: 200
+      Protocol: 6
+      RuleAction: allow
+      CidrBlock: !Ref VPC.CidrBlock
+      PortRange:
+        From: 443
+        To: 443
   # End of NACL Related Resourcses
 
   PrivateRouteTable1:
