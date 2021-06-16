@@ -7,3 +7,9 @@ deployments:
     regions:
       - us-east-1
   - ignore_git_branch: true
+
+
+variables:
+  regions:
+    dev:
+      - us-east-1
