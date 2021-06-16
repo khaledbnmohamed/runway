@@ -10,6 +10,8 @@ deployments:
 
 
 variables:
+  namespace: example
   regions:
     dev:
       - us-east-1
+      - us-west-2
