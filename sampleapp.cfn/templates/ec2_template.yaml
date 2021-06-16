@@ -51,7 +51,7 @@ Resources:
               content: !Join
                 - ''
                 - - |
-                    <html> <h1>Welcome to the AWS Jenkins, Khaled Sample</h1></html>
+                    <html> <h1>Welcome to the AWS CloudFormation Khaled Sample</h1></html>
 
               mode: '000600'
               owner: apache
@@ -95,7 +95,7 @@ Resources:
               content: !Join
                 - ''
                 - - |
-                    <html> <h1>Welcome to the AWS Jenkins, Khaled Sample</h1></html>
+                    <html> <h1>Welcome to the AWS CloudFormation Khaled Sample</h1></html>
               mode: '000600'
               owner: apache
               group: apache
@@ -118,8 +118,8 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           yum update -y aws-cfn-bootstrap
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource PublicWebServerInstance1  --configsets InstallAndRun --region ${AWS::Region}
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PublicWebServerInstance1 --region ${AWS::Region}
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource PublicWebServerInstance2  --configsets InstallAndRun --region ${AWS::Region}
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PublicWebServerInstance2 --region ${AWS::Region}
 
   BastionHostInstance:
     Type: 'AWS::EC2::Instance'
