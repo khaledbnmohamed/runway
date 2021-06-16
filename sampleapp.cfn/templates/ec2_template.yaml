@@ -51,7 +51,7 @@ Resources:
               content: !Join
                 - ''
                 - - |
-                    <html> <h1>Welcome to the AWS CloudFormation Khaled Sample</h1></html>
+                    <html> <h1>Welcome to the AWS Jenkins, Khaled Sample</h1></html>
 
               mode: '000600'
               owner: apache
