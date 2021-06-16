@@ -4,7 +4,7 @@ CET-013
 
 * Create a Web API that List/save/get countries in/from DynamoDB using NodeJS and serverless framework  **Which is CloudFormation stack under the hood**
 
-![Schema](schema.png)
+![Schema](schema.png)1
 
 ## :large_blue_diamond: Implementaion Guide
 1) Use runway to Deploy the 2 stacks from CET-005
