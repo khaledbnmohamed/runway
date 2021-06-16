@@ -28,7 +28,7 @@ CET-013
 ## :large_blue_diamond: Implementaion Guide
 1) Deploy `sls deploy`
 
-    You should see something similar to this:
+    You should see something similar to this:aaaa
     ![](deploy.png)
 
     Result API Gateway URL
