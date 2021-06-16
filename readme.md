@@ -10,7 +10,7 @@ CET-013
 1) Use runway to Deploy the 2 stacks from CET-005
 2) Create a seprate EC2 Instance and install jenkins on it
 
-# Make it Work !
+# Make it Work 
 
 ## :large_orange_diamond: Resources :
 1) DynamoDB Table
