@@ -1,17 +1,15 @@
 ---
 # See full syntax at https://docs.onica.com/projects/runway
 deployments:
-  - modules:
+  - name: example
+    modules:
       - path: sampleapp.cfn
-      # - etc...
     regions:
       - us-east-1
-  - ignore_git_branch: true
-
 
 variables:
-  namespace: example
-  regions:
+  parameters:
     dev:
-      - us-east-1
-      - us-west-2
+      namespace: example-dev
+      regions:
+        - us-east-1

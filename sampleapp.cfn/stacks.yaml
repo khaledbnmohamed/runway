@@ -14,6 +14,8 @@ stacks:
       PrivateSubnet1CIDR: 10.192.20.0/24
       PrivateSubnet2CIDR: 10.192.21.0/24
   cet-013-stack-ec2:
+    requires:
+      - cet-013-stack-vpc
     template_path: templates/ec2_template.yaml
     variables:
       NetworkStackNameParameter: cet-013-stack-vpc
