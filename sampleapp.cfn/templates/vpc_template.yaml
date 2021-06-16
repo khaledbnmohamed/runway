@@ -209,7 +209,7 @@ Resources:
       RuleNumber: 400
       Protocol: 6
       RuleAction: allow
-      CidrBlock: !Ref VPC.CidrBlock
+      CidrBlock: !GetAtt VPC.CidrBlock
       PortRange:
         From: 443
         To: 443
@@ -234,7 +234,7 @@ Resources:
       RuleNumber: 200
       Protocol: 6
       RuleAction: allow
-      CidrBlock: !Ref VPC.CidrBlock
+      CidrBlock: !GetAtt VPC.CidrBlock
       PortRange:
         From: 443
         To: 443
