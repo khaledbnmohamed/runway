@@ -2,7 +2,7 @@ CET-013
 
 # Task Summary
 
-* Create a Web API that List/save/get countries in/from DynamoDB using NodeJS and serverless framework  **Which is CloudFormation stack under the hood**
+* Create a Web API that List/save/get countries in/from DynamoDB using NodeJS and serverless framework  **Which is CloudFormation stack under the hood**a
 
 
 ## :large_blue_diamond: Implementaion Guide
