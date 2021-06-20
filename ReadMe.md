@@ -5,7 +5,7 @@ CET-013
 * Create a Web API that List/save/get countries in/from DynamoDB using NodeJS and serverless framework  **Which is CloudFormation stack under the hood**
 
 
-## :large_blue_diamond: Implementaion Guide
+## :large_blue_diamond: Implementaion Guidea
 1) [Create an EC2 Instance and install jenkins on it](https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/#Download%20and%20Install%20Jenkins)
 2) Create a Github Repo that contains your project
    
