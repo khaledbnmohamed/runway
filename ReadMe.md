@@ -17,7 +17,7 @@ CET-013
    aش
    Example:
    ![sourcecode](sourcecode.png)ش
-
+س
 7) Check the build trigger for Github hookيs
    
    Example:
