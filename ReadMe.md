@@ -16,7 +16,7 @@ CET-013
 6) Specifiy the Github repo for this job
    a
    Example:
-   ![sourcecode](sourcecode.png)
+   ![sourcecode](sourcecode.png)ش
 
 7) Check the build trigger for Github hooks
    
