@@ -18,7 +18,7 @@ CET-013
    Example:
    ![sourcecode](sourcecode.png)ش
 
-7) Check the build trigger for Github hooks
+7) Check the build trigger for Github hookيs
    
    Example:
    ![build-trigger](build-trigger.png)
