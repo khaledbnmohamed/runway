@@ -14,7 +14,7 @@ CET-013
 4) Add SSH credentials for Github
 5) Create a new Job on jenkins
 6) Specifiy the Github repo for this job
-   a
+   aش
    Example:
    ![sourcecode](sourcecode.png)ش
 
