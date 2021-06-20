@@ -161,7 +161,18 @@ Resources:
       - !GetAtt PrivateInstanceSecurityGroup.GroupId
       KeyName: !Ref KeyName
 
-
+  PrivateWebServerInstance3:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+    # latest AMI
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !ImportValue
+        'Fn::Sub': '${NetworkStackNameParameter}-PrivateSubnet2'
+      SecurityGroupIds:
+      - !GetAtt PrivateInstanceSecurityGroup.GroupId
+      KeyName: !Ref KeyName
+      
   BastionHostSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
