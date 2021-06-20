@@ -7,7 +7,7 @@ CET-013
 
 ## :large_blue_diamond: Implementaion Guidea
 1) [Create an EC2 Instance and install jenkins on it](https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/#Download%20and%20Install%20Jenkins)
-2) Create a Github Repo that contains your project
+2) Create a Github Repo that contains your projectش
    
       [Runway Repo](https://github.com/khaledbnmohamed/runway`)
 3) Install needed plugins on Jenkins
